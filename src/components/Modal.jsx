@@ -1,9 +1,16 @@
 import { forwardRef } from "react";
 
-const Modal = forwardRef(function Modal({ result, targetTime }, ref) {
+const Modal = forwardRef(function Modal(
+  { timeRemaining, targetTime, onReset },
+  ref
+) {
+  const userLost = timeRemaining <= 0;
+  const formattedRemainingTime = (timeRemaining / 1000).toFixed(2);
+  console.log(timeRemaining);
   return (
     <dialog ref={ref} className="result-modal">
-      <h2>You {result}</h2>
+      {userLost ? <h2>You lost</h2> : <h2>You won</h2>}
+
       <p>
         The target time was{" "}
         <strong>
@@ -11,10 +18,11 @@ const Modal = forwardRef(function Modal({ result, targetTime }, ref) {
         </strong>
       </p>
       <p>
-        You stopped the time with <strong> seconds left </strong>
+        You stopped the time with{" "}
+        <strong> {formattedRemainingTime} seconds left </strong>
       </p>
       <form method="dialog">
-        <button>Close</button>
+        <button onClick={onReset}>Close</button>
       </form>
     </dialog>
   );
